@@ -210,9 +210,9 @@ impl<T: Ord + Clone> AVLTree<T> {
             self.inorder_traversal_rec(&curr.borrow().right, result);
         }
     }
-    pub fn height(&self) -> isize {
-        self.root.as_ref().map_or(0, |r| r.borrow().height)
-    }
+   pub fn height(&self) -> isize {
+    self.root.as_ref().map_or(0, |r| r.borrow().height)
+}
 }
 
 fn main() {
