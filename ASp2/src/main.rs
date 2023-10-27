@@ -218,12 +218,12 @@ impl<T: Ord + Clone> AVLTree<T> {
 fn main() {
     let mut avl_tree = AVLTree::<i32>::new();
     avl_tree.insert(10);
-    avl_tree.insert(5);
     avl_tree.insert(20);
-    avl_tree.insert(1);
-    avl_tree.insert(6);
-    avl_tree.insert(15);
+    avl_tree.insert(30);
+    avl_tree.insert(40);
+    avl_tree.insert(50);
     avl_tree.insert(25);
+    
 
     if avl_tree.is_empty() {
         println!("The AVL tree is empty.");
@@ -235,9 +235,7 @@ fn main() {
     println!("Leaves Count: {}", avl_tree.count_leaves());
     println!("Height before deletion: {}", avl_tree.height());
 
-    avl_tree.delete(10);
-    avl_tree.delete(5);
-    avl_tree.delete(20);
+    avl_tree.delete(25);
     println!("Leaves Count after deletion: {}", avl_tree.count_leaves());
     println!("Height after deletion: {}", avl_tree.height());
     println!("In-order Traversal after deletion: {:?}", avl_tree.inorder_traversal());
