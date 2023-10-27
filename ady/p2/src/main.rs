@@ -59,22 +59,26 @@ impl<T: Ord + Clone> AVLTree<T> {
     }
 
     fn insert_rec(&self, node: AVLTreePtr<T>, new_node: AVLTreePtr<T>) -> Rc<RefCell<AVLNode<T>>> {
-        let current_node = node.unwrap();
-        let new_value = new_node.as_ref().unwrap().borrow().value.clone();
-
-        if new_value < current_node.borrow().value {
-            let left_child = current_node.borrow_mut().left.take();
-            current_node.borrow_mut().left = Some(self.insert_rec(left_child, new_node));
-        } else if new_value > current_node.borrow().value {
-            let right_child = current_node.borrow_mut().right.take();
-            current_node.borrow_mut().right = Some(self.insert_rec(right_child, new_node));
+        if let Some(current_node) = &node {
+            let new_value = new_node.as_ref().unwrap().borrow().value.clone();
+    
+            if new_value < current_node.borrow().value {
+                let left_child = current_node.borrow_mut().left.take();
+                current_node.borrow_mut().left = Some(self.insert_rec(left_child, new_node.clone()));
+            } else if new_value > current_node.borrow().value {
+                let right_child = current_node.borrow_mut().right.take();
+                current_node.borrow_mut().right = Some(self.insert_rec(right_child, new_node.clone()));
+            } else {
+                return current_node.clone();
+            }
+    
+            current_node.borrow_mut().update_height();
+            self.balance(current_node.clone())
         } else {
-            return current_node;
+            new_node.unwrap()
         }
-
-        current_node.borrow_mut().update_height();
-        self.balance(current_node)
     }
+    
 
     fn balance(&self, node: Rc<RefCell<AVLNode<T>>>) -> Rc<RefCell<AVLNode<T>>> {
         let balance_factor = node.borrow().balance_factor();
@@ -137,40 +141,45 @@ impl<T: Ord + Clone> AVLTree<T> {
     }
 
     fn delete_rec(&self, node: Rc<RefCell<AVLNode<T>>>, value: T) -> Rc<RefCell<AVLNode<T>>> {
-        let current_node = node;
-
-        if value < current_node.borrow().value {
-            if let Some(left_child) = &current_node.borrow().left {
-                current_node.borrow_mut().left = Some(self.delete_rec(left_child.clone(), value));
-            }
-        } else if value > current_node.borrow().value {
-            if let Some(right_child) = &current_node.borrow().right {
-                current_node.borrow_mut().right = Some(self.delete_rec(right_child.clone(), value));
-            }
+        // Separate the value fetching from the borrow to avoid double borrowing
+        let node_val = node.borrow().value.clone();
+        
+        if value < node_val {
+            let left_child = node.borrow_mut().left.take();
+            node.borrow_mut().left = Some(self.delete_rec(left_child.unwrap_or(node.clone()), value));
+        } else if value > node_val {
+            let right_child = node.borrow_mut().right.take();
+            node.borrow_mut().right = Some(self.delete_rec(right_child.unwrap_or(node.clone()), value));
         } else {
-            if current_node.borrow().left.is_none() {
-                return current_node.borrow_mut().right.take().unwrap_or_else(|| current_node.clone());
-            } else if current_node.borrow().right.is_none() {
-                return current_node.borrow_mut().left.take().unwrap_or_else(|| current_node.clone());
+            if node.borrow().left.is_none() {
+                return node.borrow_mut().right.take().unwrap_or_else(|| node.clone());
+            } else if node.borrow().right.is_none() {
+                return node.borrow_mut().left.take().unwrap_or_else(|| node.clone());
             }
 
-            let temp = self.min_value_node(current_node.borrow().right.clone().unwrap());
+            let temp = self.min_value_node(node.borrow().right.clone().unwrap());
             let temp_val = temp.borrow().value.clone();
-            current_node.borrow_mut().value = temp_val.clone();
-            current_node.borrow_mut().right = Some(self.delete_rec(temp.clone(), temp_val));
+            node.borrow_mut().value = temp_val.clone();
+            let right_child_for_delete = node.borrow_mut().right.take();
+            node.borrow_mut().right = Some(self.delete_rec(right_child_for_delete.unwrap_or(temp.clone()), temp_val));
         }
 
-        current_node.borrow_mut().update_height();
-        self.balance(current_node.clone())
+        node.borrow_mut().update_height();
+        self.balance(node.clone())
     }
 
     fn min_value_node(&self, node: Rc<RefCell<AVLNode<T>>>) -> Rc<RefCell<AVLNode<T>>> {
         let mut current = node.clone();
-        while let Some(left) = current.borrow().left.clone() {
-            current = left;
+        while current.borrow().left.is_some() {
+            let next = {
+                current.borrow().left.as_ref().unwrap().clone()
+            };
+            current = next;
         }
         current
     }
+    
+    
     
 
     pub fn count_leaves(&self) -> usize {
@@ -189,6 +198,20 @@ impl<T: Ord + Clone> AVLTree<T> {
             0
         }
     }
+
+    pub fn inorder_traversal(&self) -> Vec<T> {
+        let mut result = Vec::new();
+        self.inorder_helper(&self.root, &mut result);
+        result
+    }
+
+    fn inorder_helper(&self, node: &AVLTreePtr<T>, result: &mut Vec<T>) {
+        if let Some(curr) = node {
+            self.inorder_helper(&curr.borrow().left, result);
+            result.push(curr.borrow().value.clone());
+            self.inorder_helper(&curr.borrow().right, result);
+        }
+    }
 }
 
 fn main() {
@@ -200,8 +223,9 @@ fn main() {
     avl_tree.insert(50);
     avl_tree.insert(25);
 
-    println!("Leaves Count: {}", avl_tree.count_leaves());
+    // println!("Leaves Count: {}", avl_tree.count_leaves());
 
     avl_tree.delete(25);
-    println!("Leaves Count after deletion: {}", avl_tree.count_leaves());
+    // println!("Leaves Count after deletion: {}", avl_tree.count_leaves());
+    println!("{:?}",avl_tree.inorder_traversal());
 }
