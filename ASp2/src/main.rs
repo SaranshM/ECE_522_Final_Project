@@ -42,7 +42,28 @@ impl<T: Ord + Clone> AVLNode<T> {
 
 }
 
-impl<T: Ord + Clone> AVLTree<T> {
+impl<T: Ord + Clone + std::fmt::Display> AVLTree<T> {
+
+    pub fn print_tree(&self) {
+        self.print_tree_rec(&self.root, 0);
+    }
+
+    fn print_tree_rec(&self, node: &AVLTreePtr<T>, level: usize) {
+        if let Some(curr) = node {
+            // Print right subtree with increased indentation
+            self.print_tree_rec(&curr.borrow().right, level + 1);
+
+            // Print the current node value with the current level of indentation
+            for _ in 0..level {
+                print!("   ");
+            }
+            println!("{}", curr.borrow().value);
+
+            // Print left subtree with increased indentation
+            self.print_tree_rec(&curr.borrow().left, level + 1);
+        }
+    }
+
     pub fn new() -> Self {
         AVLTree { root: None }
     }
@@ -234,6 +255,7 @@ fn main() {
         println!("5. Get tree height");
         println!("6. Check if tree is empty");
         println!("7. Exit");
+        println!("8. Print tree structure");
         println!("------------------------------------------");
         
         // Read user's choice
@@ -277,6 +299,10 @@ fn main() {
                 println!("Thank you for using the AVL Tree CLI. Goodbye!");
                 break;
             },
+            Ok(8) => {
+                println!("Tree Structure:");
+                avl_tree.print_tree();
+            },
             _ => {
                 println!("Invalid choice! Please select a valid option from the menu.");
             }
@@ -284,32 +310,3 @@ fn main() {
     }
 }
 
-//     let mut avl_tree = AVLTree::<i32>::new();
-//     avl_tree.insert(10);
-//     avl_tree.insert(5);
-//     avl_tree.insert(20);
-//     // avl_tree.insert(1);
-//     // avl_tree.insert(6);
-//     // avl_tree.insert(15);
-//     // avl_tree.insert(25);
-    
-
-//     if avl_tree.is_empty() {
-//         println!("The AVL tree is empty.");
-//     } else {
-//         println!("The AVL tree is not empty.");
-//     }
-
-//     println!("In-order Traversal: {:?}", avl_tree.inorder_traversal());
-//     println!("Leaves Count: {}", avl_tree.count_leaves());
-//     println!("Height before deletion: {}", avl_tree.height());
-
-//     avl_tree.delete(10);
-//     avl_tree.delete(5);
-//     avl_tree.delete(20);
-//     avl_tree.delete(1);
-//     println!("Leaves Count after deletion: {}", avl_tree.count_leaves());
-//     println!("Height after deletion: {}", avl_tree.height());
-//     println!("In-order Traversal after deletion: {:?}", avl_tree.inorder_traversal());
-
-//
