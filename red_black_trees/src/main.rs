@@ -404,16 +404,26 @@ fn main() {
     rb_tree.insert(15);
     rb_tree.insert(25);
 
+    rb_tree.print_custom_format();
+
+    rb_tree.print_in_order();
+
+    println!("Height -> {}", rb_tree.height());
+    println!("Leaves -> {}", rb_tree.count_leaves());
+
     // Checking if the tree is empty after some insertions
     println!("Is tree empty? {}", rb_tree.is_empty());
 
     rb_tree.delete(10);
     rb_tree.delete(5);
     rb_tree.delete(20);
-    rb_tree.delete(1);
-    rb_tree.delete(6);
-    rb_tree.delete(15);
-    rb_tree.delete(25);
+
+    rb_tree.print_custom_format();
+
+    rb_tree.print_in_order();
+
+    println!("Height -> {}", rb_tree.height());
+    println!("Leaves -> {}", rb_tree.count_leaves());
 
     println!("Is tree empty? {}", rb_tree.is_empty());
 }
