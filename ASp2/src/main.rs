@@ -152,16 +152,24 @@ impl<T: Ord + Clone> AVLTree<T> {
                     node_borrow.right = self.delete_rec(node_borrow.right.take(), value);
                 } else {
                     if node_borrow.left.is_some() && node_borrow.right.is_some() {
+                        // Find the inorder successor's value
                         let temp = self.min_value_node(node_borrow.right.as_ref().unwrap().clone());
-                        node_borrow.value = temp.borrow().value.clone();
-                        node_borrow.right = self.delete_rec(node_borrow.right.take(), temp.borrow().value.clone());
+                        let inorder_successor_value = temp.borrow().value.clone();
+                        
+                        // Drop the reference to temp (i.e., inorder successor) 
+                        // before proceeding with the deletion.
+                        drop(temp);
+    
+                        // Now, delete the inorder successor.
+                        node_borrow.value = inorder_successor_value.clone();
+                        node_borrow.right = self.delete_rec(node_borrow.right.take(), inorder_successor_value);
                     } else if node_borrow.left.is_some() {
                         return node_borrow.left.take();
                     } else {
                         return node_borrow.right.take();
                     }
                 }
-        
+    
                 node_borrow.update_height();
                 to_balance = Some(current_node.clone());
             }
@@ -170,6 +178,7 @@ impl<T: Ord + Clone> AVLTree<T> {
             None
         }
     }
+    
     
     fn min_value_node(&self, node: Rc<RefCell<AVLNode<T>>>) -> Rc<RefCell<AVLNode<T>>> {
         let mut current = node;
@@ -218,11 +227,13 @@ impl<T: Ord + Clone> AVLTree<T> {
 fn main() {
     let mut avl_tree = AVLTree::<i32>::new();
     avl_tree.insert(10);
+    avl_tree.insert(5);
     avl_tree.insert(20);
-    avl_tree.insert(30);
-    avl_tree.insert(40);
-    avl_tree.insert(50);
+    avl_tree.insert(1);
+    avl_tree.insert(6);
+    avl_tree.insert(15);
     avl_tree.insert(25);
+    
 
     if avl_tree.is_empty() {
         println!("The AVL tree is empty.");
@@ -234,7 +245,9 @@ fn main() {
     println!("Leaves Count: {}", avl_tree.count_leaves());
     println!("Height before deletion: {}", avl_tree.height());
 
-    avl_tree.delete(25);
+    avl_tree.delete(10);
+    avl_tree.delete(5);
+    avl_tree.delete(20);
     println!("Leaves Count after deletion: {}", avl_tree.count_leaves());
     println!("Height after deletion: {}", avl_tree.height());
     println!("In-order Traversal after deletion: {:?}", avl_tree.inorder_traversal());
