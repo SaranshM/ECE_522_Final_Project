@@ -1,5 +1,7 @@
 use std::rc::Rc;
 use std::cell::RefCell;
+use std::io;
+
 
 type AVLTreePtr<T> = Option<Rc<RefCell<AVLNode<T>>>>;
 
@@ -41,7 +43,28 @@ impl<T: Ord + Clone> AVLNode<T> {
 
 }
 
-impl<T: Ord + Clone> AVLTree<T> {
+impl<T: Ord + Clone + std::fmt::Display> AVLTree<T> {
+
+    pub fn print_tree(&self) {
+        self.print_tree_rec(&self.root, 0);
+    }
+
+    fn print_tree_rec(&self, node: &AVLTreePtr<T>, level: usize) {
+        if let Some(curr) = node {
+            // Print right subtree with increased indentation
+            self.print_tree_rec(&curr.borrow().right, level + 1);
+
+            // Print the current node value with the current level of indentation
+            for _ in 0..level {
+                print!("   ");
+            }
+            println!("{}", curr.borrow().value);
+
+            // Print left subtree with increased indentation
+            self.print_tree_rec(&curr.borrow().left, level + 1);
+        }
+    }
+
     pub fn new() -> Self {
         AVLTree { root: None }
     }
@@ -142,35 +165,38 @@ impl<T: Ord + Clone> AVLTree<T> {
     }
     fn delete_rec(&self, node: AVLTreePtr<T>, value: T) -> AVLTreePtr<T> {
         if let Some(current_node) = node {
-            let mut to_balance = None;
             {
                 let mut node_borrow = current_node.borrow_mut();
-    
+
                 if value < node_borrow.value {
                     node_borrow.left = self.delete_rec(node_borrow.left.take(), value);
                 } else if value > node_borrow.value {
                     node_borrow.right = self.delete_rec(node_borrow.right.take(), value);
                 } else {
                     if node_borrow.left.is_some() && node_borrow.right.is_some() {
+                        // Find the inorder successor's value
                         let temp = self.min_value_node(node_borrow.right.as_ref().unwrap().clone());
-                        node_borrow.value = temp.borrow().value.clone();
-                        node_borrow.right = self.delete_rec(node_borrow.right.take(), temp.borrow().value.clone());
+                        let inorder_successor_value = temp.borrow().value.clone();
+                        // Now, delete the inorder successor.
+                        node_borrow.right = self.delete_rec(node_borrow.right.take(), inorder_successor_value.clone());
+                        // Assign the inorder successor value to the current node.
+                        node_borrow.value = inorder_successor_value;
                     } else if node_borrow.left.is_some() {
-                        return node_borrow.left.take();
+                        return Some(self.balance(node_borrow.left.take().unwrap()));
+                    } else if node_borrow.right.is_some() {
+                        return Some(self.balance(node_borrow.right.take().unwrap()));
                     } else {
-                        return node_borrow.right.take();
+                        return None;
                     }
                 }
-        
                 node_borrow.update_height();
-                to_balance = Some(current_node.clone());
             }
-            to_balance.map(|n| self.balance(n))
+            Some(self.balance(current_node))
         } else {
             None
         }
     }
-    
+        
     fn min_value_node(&self, node: Rc<RefCell<AVLNode<T>>>) -> Rc<RefCell<AVLNode<T>>> {
         let mut current = node;
         while current.borrow().left.is_some() {
@@ -217,26 +243,71 @@ impl<T: Ord + Clone> AVLTree<T> {
 
 fn main() {
     let mut avl_tree = AVLTree::<i32>::new();
-    avl_tree.insert(10);
-    avl_tree.insert(20);
-    avl_tree.insert(30);
-    avl_tree.insert(40);
-    avl_tree.insert(50);
-    avl_tree.insert(25);
     
-
-    if avl_tree.is_empty() {
-        println!("The AVL tree is empty.");
-    } else {
-        println!("The AVL tree is not empty.");
+    loop {
+        // Display the menu
+        println!("------------------------------------------");
+        println!("AVL Tree Operations");
+        println!("------------------------------------------");
+        println!("1. Insert an element");
+        println!("2. Delete an element");
+        println!("3. Display tree in-order");
+        println!("4. Count leaves");
+        println!("5. Get tree height");
+        println!("6. Check if tree is empty");
+        println!("7. Exit");
+        println!("8. Print tree structure");
+        println!("------------------------------------------");
+        
+        // Read user's choice
+        let mut choice = String::new();
+        io::stdin().read_line(&mut choice).expect("Failed to read line");
+        
+        match choice.trim().parse::<u32>() {
+            Ok(1) => {
+                println!("Enter the element to insert:");
+                let mut element = String::new();
+                io::stdin().read_line(&mut element).expect("Failed to read line");
+                let element: i32 = element.trim().parse().expect("Please enter a valid number");
+                avl_tree.insert(element);
+                println!("Element inserted successfully!");
+            },
+            Ok(2) => {
+                println!("Enter the element to delete:");
+                let mut element = String::new();
+                io::stdin().read_line(&mut element).expect("Failed to read line");
+                let element: i32 = element.trim().parse().expect("Please enter a valid number");
+                avl_tree.delete(element);
+                println!("Element deleted successfully!");
+            },
+            Ok(3) => {
+                println!("In-order Traversal: {:?}", avl_tree.inorder_traversal());
+            },
+            Ok(4) => {
+                println!("Leaves Count: {}", avl_tree.count_leaves());
+            },
+            Ok(5) => {
+                println!("Tree Height: {}", avl_tree.height());
+            },
+            Ok(6) => {
+                if avl_tree.is_empty() {
+                    println!("The AVL tree is empty.");
+                } else {
+                    println!("The AVL tree is not empty.");
+                }
+            },
+            Ok(7) => {
+                println!("Thank you for using the AVL Tree CLI. Goodbye!");
+                break;
+            },
+            Ok(8) => {
+                println!("Tree Structure:");
+                avl_tree.print_tree();
+            },
+            _ => {
+                println!("Invalid choice! Please select a valid option from the menu.");
+            }
+        }
     }
-
-    println!("In-order Traversal: {:?}", avl_tree.inorder_traversal());
-    println!("Leaves Count: {}", avl_tree.count_leaves());
-    println!("Height before deletion: {}", avl_tree.height());
-
-    avl_tree.delete(25);
-    println!("Leaves Count after deletion: {}", avl_tree.count_leaves());
-    println!("Height after deletion: {}", avl_tree.height());
-    println!("In-order Traversal after deletion: {:?}", avl_tree.inorder_traversal());
 }
+
