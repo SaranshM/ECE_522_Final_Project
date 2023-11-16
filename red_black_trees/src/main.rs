@@ -1,5 +1,6 @@
 use std::cell::RefCell;
 use std::rc::{Rc, Weak};
+use std::io;
 
 #[derive(Clone, Debug, PartialEq)]
 enum NodeColor {
@@ -394,38 +395,104 @@ impl<T: Ord + std::fmt::Debug + Clone> RedBlackTreeRoot<T> {
 fn main() {
     let mut rb_tree = RedBlackTreeRoot::new();
 
-    println!("Is tree empty? {}", rb_tree.is_empty());
+    // println!("Is tree empty? {}", rb_tree.is_empty());
 
-    rb_tree.insert(10);
-    rb_tree.insert(5);
-    rb_tree.insert(20);
-    rb_tree.insert(1);
-    rb_tree.insert(6);
-    rb_tree.insert(15);
-    rb_tree.insert(25);
+    // rb_tree.insert(10);
+    // rb_tree.insert(5);
+    // rb_tree.insert(20);
+    // rb_tree.insert(1);
+    // rb_tree.insert(6);
+    // rb_tree.insert(15);
+    // rb_tree.insert(25);
 
-    rb_tree.print_custom_format();
+    // rb_tree.print_custom_format();
 
-    rb_tree.print_in_order();
+    // rb_tree.print_in_order();
 
-    println!("Height -> {}", rb_tree.height());
-    println!("Leaves -> {}", rb_tree.count_leaves());
+    // println!("Height -> {}", rb_tree.height());
+    // println!("Leaves -> {}", rb_tree.count_leaves());
 
-    // Checking if the tree is empty after some insertions
-    println!("Is tree empty? {}", rb_tree.is_empty());
+    // // Checking if the tree is empty after some insertions
+    // println!("Is tree empty? {}", rb_tree.is_empty());
 
-    rb_tree.delete(10);
-    rb_tree.delete(5);
-    rb_tree.delete(20);
+    // rb_tree.delete(10);
+    // rb_tree.delete(5);
+    // rb_tree.delete(20);
 
-    rb_tree.print_custom_format();
+    // rb_tree.print_custom_format();
 
-    rb_tree.print_in_order();
+    // rb_tree.print_in_order();
 
-    println!("Height -> {}", rb_tree.height());
-    println!("Leaves -> {}", rb_tree.count_leaves());
+    // println!("Height -> {}", rb_tree.height());
+    // println!("Leaves -> {}", rb_tree.count_leaves());
 
-    println!("Is tree empty? {}", rb_tree.is_empty());
+    // println!("Is tree empty? {}", rb_tree.is_empty());
+    
+    loop {
+        // Display the menu
+        println!("------------------------------------------");
+        println!("AVL Tree Operations");
+        println!("------------------------------------------");
+        println!("1. Insert an element");
+        println!("2. Delete an element");
+        println!("3. Display tree in-order");
+        println!("4. Count leaves");
+        println!("5. Get tree height");
+        println!("6. Check if tree is empty");
+        println!("7. Exit");
+        println!("8. Print tree structure");
+        println!("------------------------------------------");
+        
+        // Read user's choice
+        let mut choice = String::new();
+        io::stdin().read_line(&mut choice).expect("Failed to read line");
+        
+        match choice.trim().parse::<u32>() {
+            Ok(1) => {
+                println!("Enter the element to insert:");
+                let mut element = String::new();
+                io::stdin().read_line(&mut element).expect("Failed to read line");
+                let element: i32 = element.trim().parse().expect("Please enter a valid number");
+                rb_tree.insert(element);
+                println!("Element inserted successfully!");
+            },
+            Ok(2) => {
+                println!("Enter the element to delete:");
+                let mut element = String::new();
+                io::stdin().read_line(&mut element).expect("Failed to read line");
+                let element: i32 = element.trim().parse().expect("Please enter a valid number");
+                rb_tree.delete(element);
+                println!("Element deleted successfully!");
+            },
+            Ok(3) => {
+                println!("In-order Traversal: {:?}", rb_tree.print_in_order());
+            },
+            Ok(4) => {
+                println!("Leaves Count: {}", rb_tree.count_leaves());
+            },
+            Ok(5) => {
+                println!("Tree Height: {}", rb_tree.height());
+            },
+            Ok(6) => {
+                if rb_tree.is_empty() {
+                    println!("The AVL tree is empty.");
+                } else {
+                    println!("The AVL tree is not empty.");
+                }
+            },
+            Ok(7) => {
+                println!("Thank you for using the AVL Tree CLI. Goodbye!");
+                break;
+            },
+            Ok(8) => {
+                println!("Tree Structure:");
+                rb_tree.print_custom_format();
+            },
+            _ => {
+                println!("Invalid choice! Please select a valid option from the menu.");
+            }
+        }
+    }
 }
 
 

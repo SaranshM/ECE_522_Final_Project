@@ -1,0 +1,17 @@
+C:\Users\saran\OneDrive\Desktop\Academics\UofA\Fall '23\ECE 522\Project\ece-522-project\ASp2\target\debug\deps\unic_char_range-1c084e2c8a74ad1d.rmeta: C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\lib.rs C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\pkg_info.rs C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\iter.rs C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\range.rs C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\macros.rs C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\step.rs C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\iter_fused.rs
+
+C:\Users\saran\OneDrive\Desktop\Academics\UofA\Fall '23\ECE 522\Project\ece-522-project\ASp2\target\debug\deps\libunic_char_range-1c084e2c8a74ad1d.rlib: C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\lib.rs C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\pkg_info.rs C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\iter.rs C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\range.rs C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\macros.rs C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\step.rs C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\iter_fused.rs
+
+C:\Users\saran\OneDrive\Desktop\Academics\UofA\Fall '23\ECE 522\Project\ece-522-project\ASp2\target\debug\deps\unic_char_range-1c084e2c8a74ad1d.d: C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\lib.rs C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\pkg_info.rs C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\iter.rs C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\range.rs C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\macros.rs C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\step.rs C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\iter_fused.rs
+
+C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\lib.rs:
+C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\pkg_info.rs:
+C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\iter.rs:
+C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\range.rs:
+C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\macros.rs:
+C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\step.rs:
+C:\Users\saran\.cargo\registry\src\index.crates.io-6f17d22bba15001f\unic-char-range-0.9.0\src\iter_fused.rs:
+
+# env-dep:CARGO_PKG_DESCRIPTION=UNIC — Unicode Character Tools — Character Range and Iteration
+# env-dep:CARGO_PKG_NAME=unic-char-range
+# env-dep:CARGO_PKG_VERSION=0.9.0
