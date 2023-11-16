@@ -1,7 +1,7 @@
 # Compiled files and directories
 /target/
 /ASp2/target/
-/red_black_trees/target
+/red_black_trees/target/
 
 # Remove Cargo.lock from gitignore if creating an executable, keep it for libraries
 Cargo.lock
