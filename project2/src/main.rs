@@ -219,7 +219,7 @@ fn run_avltree() {
                 // search for a node
                 println!("Enter key of node you would like to search for: ");
                 num = handle_user_input();
-                println!("Is key present? {:#?}", tree.search_element(num));
+                println!("Is key present? {:#?}", tree.search(num));
                 println!("");
                 println!("-----------------------");
                 println!("");
