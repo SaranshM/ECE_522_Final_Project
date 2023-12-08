@@ -1,5 +1,5 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
-use FinalProject::rbtree::RBTree; // Replace with your RB tree module
+use FinalProject::rbtree::RBTree;
 
 #[cfg(feature = "debug_print")]
 macro_rules! debug_println {
