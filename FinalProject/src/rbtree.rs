@@ -191,7 +191,7 @@ where T: Ord+Display+Debug+Clone+Copy
                                     parent.borrow().parent.as_ref().unwrap().borrow_mut().color = NodeColor::Red;
                                     node = parent.borrow().clone().parent.clone().unwrap();
                                 } else {
-]                                    if parent.borrow().clone().key > node.borrow().clone().key {
+                                    if parent.borrow().clone().key > node.borrow().clone().key {
                                         let parent_tmp = node.borrow().parent.as_ref().unwrap().clone();
                                         node = parent_tmp;
                                         self.rotate_right(node.clone());
@@ -216,7 +216,6 @@ where T: Ord+Display+Debug+Clone+Copy
                 }
             } 
 
-            // done fixing the tree, so recurse back up the tree and return root
             while node.borrow().parent.is_some() {
                 let p = node.borrow().parent.as_ref().unwrap().clone();
                 node = p;
@@ -227,6 +226,7 @@ where T: Ord+Display+Debug+Clone+Copy
         root
     }
 
+    
     fn rotate_left(&mut self, tree_node: TreeNode<T>) {
         let cur_parent = tree_node;
         let right_child = cur_parent.borrow().right.clone();
@@ -351,12 +351,12 @@ where T: Ord+Display+Debug+Clone+Copy
             println!("Key not found");
             return;
         }
-        let u = z;
+        let u = z; 
         let p = u.as_ref().unwrap().borrow().parent.clone();
         let v = u.as_ref().unwrap().borrow().left.clone(); 
         let w = u.as_ref().unwrap().borrow().right.clone();
 
-        let mut side = Direction::Left;
+        let mut side = Direction::Left; 
 
         if p.is_some() {
             side = if p.as_ref().unwrap().borrow().clone().key > u.as_ref().unwrap().borrow().clone().key {
@@ -613,7 +613,7 @@ where T: Ord+Display+Debug+Clone+Copy
         count
     }
 
-    // return the height of a tree
+    // 4- return the height of a tree
     pub fn height(&self) -> u32 {
         if self.root.is_none() {
             return 0;
