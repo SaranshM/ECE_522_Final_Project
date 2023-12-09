@@ -5,6 +5,8 @@ use std::io;
 use std::io::Write;
 use std::thread;
 use std::time::Duration;
+use std::fs::File;
+use std::io::prelude::*;
 
 
 fn main() {
@@ -180,42 +182,80 @@ fn run_avltree() {
             1 => {
                 // insert node
                 println!("Enter element to INSERT: ");
+                println!("-----------------------");
                 num = handle_user_input();
                 tree.insert(num);
+                println!("");
+                println!("STATUS: Element inserted successfully!");
+                println!("");
+                println!("-----------------------");
+                println!("");
             },
             2 => {
                 // delete node
                 println!("Enter element to DELETE: ");
+                println!("-----------------------");
                 num = handle_user_input();
                 tree.delete(num);
+                println!("");
+                println!("STATUS: Element deleted successfully!");
+                println!("");
+                println!("-----------------------");
+                println!("");
             },
             3 => {
                 // count leaves
+                println!("-----------------------");
                 println!("There are {} leaf node(s) in the tree.", tree.count_leaves());
+                println!("");
+                println!("-----------------------");
+                println!("");
             },
             4 => {
                 // return height
+                println!("-----------------------");
                 println!("The height of the tree is {}", tree.height());
+                println!("");
+                println!("-----------------------");
+                println!("");
             },
             5 => {
                 // in-order traversal
+                println!("-----------------------");
                 println!("In-order Traversal: {:?}", tree.inorder_traversal());
+                println!("");
+                println!("-----------------------");
+                println!("");
             },
             6 => {
                 // is tree empty
+                println!("-----------------------");
                 println!("Is tree empty? {}", tree.is_empty());
+                println!("");
+                println!("-----------------------");
+                println!("");
             },
             7 => {
                 // print the tree
+                println!("-----------------------");
                 tree.print_tree();
+                println!("");
+                println!("-----------------------");
+                println!("");
             },
             8 => {
                 // number of nodes
+                println!("-----------------------");
                 println!("There are {} node(s) in the tree", tree.count());
+                println!("");
+                println!("-----------------------");
+                println!("");
             },
             9 => {
                 // search for a node
+
                 println!("Enter key of node you would like to search for: ");
+                println!("-----------------------");
                 num = handle_user_input();
                 println!("Is key present? {:#?}", tree.search(num));
                 println!("");
@@ -224,15 +264,44 @@ fn run_avltree() {
             },
             10 => {
                 // pre-order traversal
-                tree.print_preorder();
+                println!("Preorder Traversal ->");
+                println!("");
+                println!("-----------------------");
+                let preorder_vec = tree.print_preorder();
+                for value in preorder_vec {
+                    println!("{}", value);
+                }
+                println!("");
+                println!("-----------------------");
+                println!("");
             },
             11 => {
                 // level-order traversal
-                tree.print_levelorder();
+                println!("Level order Traversal ->");
+                println!("");
+                println!("-----------------------");
+                let levelorder_vec = tree.print_levelorder();
+                for value in levelorder_vec {
+                    println!("{}", value);
+                }
+                println!("");
+                println!("-----------------------");
+                println!("");
             },
             12 => {
                 // debug print
+                println!("-----------------------");
                 println!("{:#?}", tree);
+                println!("-----------------------");
+            },
+            13 => {
+                let dot_representation = tree.to_dot();
+                println!("{}", dot_representation);
+                
+                // Save to a file
+                let mut file = File::create("output.dot").expect("Could not create file");
+                file.write_all(dot_representation.as_bytes()).expect("Could not write to file");
+                println!("DOT representation saved to output.dot");
             },
             _ => {break;}
         }
@@ -255,7 +324,7 @@ fn print_options() {
     println!("10. To print pre-order traversal");
     println!("11. To print level-order traversal");
     println!("12. To debug print");
-    println!(" ");
+    println!("13. To Visualize the tree");
 }
 
 fn handle_user_input() -> u32 {

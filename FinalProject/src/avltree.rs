@@ -294,24 +294,58 @@ impl<T: Ord + Clone + std::fmt::Display> AVLTree<T> {
     }
 
     pub fn print_preorder(&self) -> Vec<T> {
-        // @abhishek
         let mut result = Vec::new();
-        self.inorder_traversal_rec(&self.root, &mut result);
+        self.preorder_traversal_rec(&self.root, &mut result);
         result
     }
+    
+    fn preorder_traversal_rec(&self, node: &AVLTreePtr<T>, result: &mut Vec<T>) {
+        if let Some(curr) = node {
+            result.push(curr.borrow().value.clone()); // Visit the root node
+            self.preorder_traversal_rec(&curr.borrow().left, result); // Then visit the left subtree
+            self.preorder_traversal_rec(&curr.borrow().right, result); // Finally, visit the right subtree
+        }
+    }
+    
 
     pub fn print_levelorder(&self) -> Vec<T> {
-        // @abhishek
         let mut result = Vec::new();
-        self.inorder_traversal_rec(&self.root, &mut result);
+        if let Some(root) = &self.root {
+            let mut queue = std::collections::VecDeque::new();
+            queue.push_back(root.clone());
+    
+            while !queue.is_empty() {
+                let current = queue.pop_front().unwrap();
+                let current_ref = current.borrow();
+                result.push(current_ref.value.clone());
+    
+                if let Some(left) = &current_ref.left {
+                    queue.push_back(left.clone());
+                }
+    
+                if let Some(right) = &current_ref.right {
+                    queue.push_back(right.clone());
+                }
+            }
+        }
+    
         result
     }
+    
 
     pub fn count(&self) -> u32 {
-        // self.count
-        // @abhishek
-        let x: u32 = 2; // dummy
-        x
+        self.count_rec(&self.root)
     }
+
+    fn count_rec(&self, node: &AVLTreePtr<T>) -> u32 {
+        if let Some(current_node) = node {
+           
+            1 + self.count_rec(&current_node.borrow().left) + self.count_rec(&current_node.borrow().right)
+        } else {
+         
+            0
+        }
+    }
+
 
 }

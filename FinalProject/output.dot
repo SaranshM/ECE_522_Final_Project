@@ -1,0 +1,3 @@
+digraph AVLTree {
+    70 -> 30 [label="L"];
+}
