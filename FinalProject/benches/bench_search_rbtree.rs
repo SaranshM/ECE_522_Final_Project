@@ -18,7 +18,7 @@ fn bench_search_rbtree(c: &mut Criterion) {
     let tree_sizes = [10_000, 40_000, 70_000, 100_000, 130_000];
 
     for &size in &tree_sizes {
-        c.bench_function(&format!("rb_tree_search_{}", size), |b| {
+        c.bench_function(&format!("rbTree_search for {} elements", size), |b| {
             b.iter(|| {
                 let mut rbtree: RBTree<i32> = RBTree::<i32>::new();
 
@@ -34,6 +34,7 @@ fn bench_search_rbtree(c: &mut Criterion) {
             });
         });
     }
+
 }
 
 criterion_group!(benches, bench_search_rbtree);

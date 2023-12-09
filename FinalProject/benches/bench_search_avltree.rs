@@ -18,7 +18,7 @@ fn bench_avl_tree_search(c: &mut Criterion) {
     let tree_sizes = [10_000, 40_000, 70_000, 100_000, 130_000];
 
     for &size in &tree_sizes {
-        c.bench_function(&format!("avl_tree_search_{}", size), |b| {
+        c.bench_function(&format!("avlTree_search for {} elements", size), |b| {
             b.iter(|| {
                 let mut avl_tree: AVLTree<i32> = AVLTree::<i32>::new();
 

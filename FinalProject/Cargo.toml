@@ -8,18 +8,15 @@ edition = "2021"
 [dependencies]
 
 [dev-dependencies]
-criterion = "0.4.0"
+criterion = "0.5.1"
 
 [[bench]]
-name = "bench_insert_avltree" # No .rs extension here
+name = "bench_insert_avltree"
 harness = false
 
 [[bench]]
-name = "bench_search_avltree" # No .rs extension here
+name = "bench_search_avltree"
 harness = false
-
-[features]
-debug_print = []
 
 [[bench]]
 name="bench_insert_rbtree"
@@ -28,3 +25,6 @@ harness= false
 [[bench]]
 name="bench_search_rbtree"
 harness=false
+
+[features]
+debug_print = []
